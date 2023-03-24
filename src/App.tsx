@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { OpenAPISpec } from './types';
+
+const SPEC_STORAGE_KEY = 'spec';
 
 function App() {
+
+  const [spec, setSpec] = useState<OpenAPISpec | null>(null);
+
+  useEffect(() => {
+    const localStorageSpec = localStorage.getItem(SPEC_STORAGE_KEY);
+
+    if (localStorageSpec !== null) {
+      setSpec(JSON.parse(localStorageSpec));
+    }
+    else {
+      fetch('https://petstore.swagger.io/v2/swagger.json')
+        .then((response) => response.json())
+        .then((data) => setSpec(data));
+    }
+  }, []);
+
+  if (spec == null) {
+    return (
+      <p>Loading...</p>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <p>{ spec.swagger }</p>
   );
 }
 
