@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
-import { OpenAPISpec } from './types';
+import SpecInfoBox from './components/SpecInfoBox';
+import { OpenAPISpec } from './openapi-2-types';
 
 const SPEC_STORAGE_KEY = 'spec';
 
@@ -18,7 +18,10 @@ function App() {
     else {
       fetch('https://petstore.swagger.io/v2/swagger.json')
         .then((response) => response.json())
-        .then((data) => setSpec(data));
+        .then((data) => {
+          localStorage.setItem(SPEC_STORAGE_KEY, JSON.stringify(data));
+          setSpec(data);
+        });
     }
   }, []);
 
@@ -28,8 +31,14 @@ function App() {
     );
   }
 
+  const specTitle = `${ spec.info.title } v.(${spec.info.version})`;
+  document.title = specTitle;
+
   return (
-    <p>{ spec.swagger }</p>
+    <div className="main-content">
+      <h1>{ specTitle }</h1>
+      <SpecInfoBox {...spec.info} />
+    </div>
   );
 }
 
