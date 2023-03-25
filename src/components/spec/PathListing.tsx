@@ -1,6 +1,5 @@
 import { Paths } from '../../openapi-2-types';
 import PathDetails from './PathDetails';
-import './PathListing.css';
 
 function PathListing(props: {paths: Paths}) {
   const pathEntries = Object.entries(props.paths);

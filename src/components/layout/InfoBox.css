@@ -1,8 +1,9 @@
 
 .info-box {
-  border: 5px solid black;
+  display: inline-block;
+  border: 2px solid black;
   border-radius: 15px;
   background: ghostwhite;
-  padding: 7px;
+  padding: 5px;
   margin: 5px 0;
 }

@@ -1,0 +1,22 @@
+
+.details-grid {
+  display: grid;
+  grid-gap: 5px;
+  grid-auto-flow: column;
+  width: 100%;
+  grid-template-columns: auto 1fr auto;
+  justify-content: end;
+}
+
+.path-url {
+  grid-column: 1 / 2;
+}
+
+.methods-list {
+  grid-column: 3 / 4;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+}
