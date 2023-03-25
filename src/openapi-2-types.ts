@@ -190,21 +190,42 @@ export type License = {
     url:  string;
 }
 
+export type Parameter = {
+    in:          string;
+    name:        string;
+    description: string;
+    required:    boolean;
+    type:       CodeType;
+}
+
+export type Response = {
+    [status: number]: {
+        description: string
+    }
+}
+
+export type EndPoint = {
+    tags:        string[];
+    summary:     string;
+    description: string;
+    operationId: string;
+    consumes:    string[];
+    produces:    string[];
+    parameters:  Parameter[];
+    responses:   Response[];
+    security:    PostSecurity[];
+}
+
+export type Path = {
+    get?: EndPoint,
+    put?: EndPoint,
+    post?: EndPoint,
+    patch?: EndPoint,
+    delete?: EndPoint,
+}
+
 export type Paths = {
-    "/pet/{petId}/uploadImage": PetPetIDUploadImage;
-    "/pet":                     PetClass;
-    "/pet/findByStatus":        PetFindByStatus;
-    "/pet/findByTags":          PetFindByTags;
-    "/pet/{petId}":             PetPetID;
-    "/store/order":             StoreOrder;
-    "/store/order/{orderId}":   StoreOrderOrderID;
-    "/store/inventory":         StoreInventory;
-    "/user/createWithArray":    UserCreateWith;
-    "/user/createWithList":     UserCreateWith;
-    "/user/{username}":         UserUsername;
-    "/user/login":              UserLogin;
-    "/user/logout":             UserLogout;
-    "/user":                    UserClass;
+    [path: string]: Path
 }
 
 export type PetClass = {

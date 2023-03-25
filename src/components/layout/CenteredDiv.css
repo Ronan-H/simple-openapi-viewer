@@ -1,0 +1,8 @@
+
+.centered-div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
