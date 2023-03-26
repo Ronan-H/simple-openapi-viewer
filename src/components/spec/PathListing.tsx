@@ -6,7 +6,10 @@ function PathListing(props: {paths: Paths, onPathClicked: any}) {
 
   return (
     <>
-      {pathEntries.map(([url, path]) => {
+      {pathEntries
+        // Sort paths alphabetically by URL
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([url, path]) => {
         return (
           <PathSummary
             key={url}

@@ -199,7 +199,7 @@ export type Parameter = {
 }
 
 export type Response = {
-    [status: number]: {
+    [status: number | string]: {
         description: string
     }
 }

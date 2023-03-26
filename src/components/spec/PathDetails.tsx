@@ -3,6 +3,22 @@ import CenteredDiv from '../layout/CenteredDiv';
 import NavButton from './NavButton';
 import './PathDetails.css';
 
+function toTitleCase(str: string) {
+  return str[0].toUpperCase() + str.substring(1);
+}
+
+const DEFAULT_RESPONSE_KEY = 'default';
+function compareStatusCode(a: string, b: string) {
+  if (a === DEFAULT_RESPONSE_KEY) {
+    return -1;
+  }
+  else if (b === DEFAULT_RESPONSE_KEY) {
+    return 1;
+  }
+
+  return parseInt(a) - parseInt(b);
+}
+
 type PathDetailsProps = {
   url: string,
   path: Path,
@@ -20,16 +36,25 @@ function PathDetails(props: PathDetailsProps) {
         const parameters = endPoint.parameters;
         const responses = endPoint.responses;
 
-        return <div key={method}>
-          <h2 >{method.toUpperCase()} - {props.url}</h2>
+        const paramLocations = endPoint.parameters.map((param) => param.in);
+        const uniqueParamLocations = Array.from(new Set(paramLocations));
 
-          <h3>Parameters:</h3>
-
-          {parameters.map((parameter) => {
+        return <>
+          {uniqueParamLocations.map((paramLocation) => {
             return (
-              <CenteredDiv key={parameter.name}>
-                <ParameterDetails parameter={parameter} />
-              </CenteredDiv>
+              <div key={paramLocation}>
+                <h2 >{method.toUpperCase()} {props.url}</h2>
+
+                <h3>{`${toTitleCase(paramLocation)} parameters:`}</h3>
+
+                {parameters.filter((param) => param.in === paramLocation).map((parameter) => {
+                  return (
+                    <CenteredDiv key={parameter.name}>
+                      <ParameterDetails parameter={parameter} />
+                    </CenteredDiv>
+                  );
+                })}
+              </div>
             );
           })}
 
@@ -38,15 +63,18 @@ function PathDetails(props: PathDetailsProps) {
           <CenteredDiv>
             <ResponseDetails response={responses} />
           </CenteredDiv>
-        </div>;
+        </>
       })}
     </>
   );
 }
 
+const HIDDEN_FIELDS = ['schema', 'in'];
+
 function ParameterDetails(props: {parameter: Parameter}) {
   const parameterEntries = Object
     .entries(props.parameter)
+    .filter(([key, _]) => !HIDDEN_FIELDS.includes(key))
     // We can't assume parameterEntries wil be in any particular order,
     // so let's just sort them alphabetically by key to keep the order
     // consistant.
@@ -73,25 +101,24 @@ function ParameterDetails(props: {parameter: Parameter}) {
 function ResponseDetails(props: {response: Response}) {
   const responseEntries = Object
     .getOwnPropertyNames(props.response)
-    .map((code) => {
-      const codeAsInt = parseInt(code);
+    .map((status) => {
       return {
-        statusCode: codeAsInt,
-        details: props.response[parseInt(code)]
+        status,
+        details: props.response[status]
       }
     })
     // We can't assume responseEntries wil be in any particular order,
     // so let's sort them numerically by status code.
-    .sort((a, b) => a.statusCode - b.statusCode );
+    .sort((a, b) => compareStatusCode(a.status, b.status));
 
   return (
     <div className="parameter-table">
       <table cellPadding="7">
         <tbody>
-          {responseEntries.map(({statusCode, details}) => {
+          {responseEntries.map(({status, details}) => {
             return (
-              <tr key={statusCode}>
-                <th>{statusCode.toString()}</th>
+              <tr key={status}>
+                <th>{status.toString()}</th>
                 <td>{details.description}</td>
               </tr>
             );
