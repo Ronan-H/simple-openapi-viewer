@@ -23,16 +23,11 @@
 
 .parameter-table table {
   border-collapse: collapse;
+  background: ghostwhite;
+  margin: 10px 0;
 }
 
-.parameter-table td {
-  padding: 2px;
-}
-
-
-.parameter-table table,
 .parameter-table tr,
 .parameter-table td {
   border: thin solid black;
-  margin: 10px 0;
 }

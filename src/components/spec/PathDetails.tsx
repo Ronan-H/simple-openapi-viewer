@@ -1,5 +1,6 @@
 import { Method, Parameter, Path } from '../../openapi-2-types';
 import CenteredDiv from '../layout/CenteredDiv';
+import NavButton from './NavButton';
 import './PathDetails.css';
 
 type PathDetailsProps = {
@@ -12,6 +13,8 @@ function PathDetails(props: PathDetailsProps) {
 
   return (
     <>
+      <NavButton route="/" displayText="Back to Path Listing"/>
+
       {pathMethods.map((method) => {
         const parameters = props.path[method].parameters;
 
