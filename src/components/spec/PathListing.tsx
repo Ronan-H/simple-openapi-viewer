@@ -1,14 +1,19 @@
 import { Paths } from '../../openapi-2-types';
-import PathDetails from './PathDetails';
+import PathSummary from './PathSummary';
 
-function PathListing(props: {paths: Paths}) {
+function PathListing(props: {paths: Paths, onPathClicked: any}) {
   const pathEntries = Object.entries(props.paths);
 
   return (
     <>
       {pathEntries.map(([url, path]) => {
         return (
-          <PathDetails key={url} url={url} path={path} />
+          <PathSummary
+            key={url}
+            url={url}
+            path={path}
+            onClick={() => props.onPathClicked(url)}
+          />
         );
       })}
     </>

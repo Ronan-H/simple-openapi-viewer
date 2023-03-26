@@ -1,24 +1,21 @@
 import { Path } from '../../openapi-2-types';
-import InfoBox from '../layout/InfoBox';
 import './PathDetails.css';
 
-function PathDetails(props: {url: string, path: Path}) {
+type PathDetailsProps = {
+  url: string,
+  path: Path,
+};
+
+function PathDetails(props: PathDetailsProps) {
   const pathMethods = Object.getOwnPropertyNames(props.path);
 
   return (
     <>
-      <InfoBox style={{width: '100%'}}>
-        <>
-          <div className="details-grid">
-            <h2 className="path-url">{props.url}</h2>
-            <div className="methods-list">
-              {pathMethods.map((method) => {
-                return <InfoBox key={method}>{method.toUpperCase()}</InfoBox>
-              })}
-            </div>
-          </div>
-        </>
-      </InfoBox>
+      {pathMethods.map((method) => {
+        return <>
+          <h2>{method.toUpperCase()} {props.url}</h2>
+        </>;
+      })}
     </>
   );
 }

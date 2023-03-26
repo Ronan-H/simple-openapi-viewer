@@ -1,11 +1,17 @@
 import React from 'react';
 import './InfoBox.css';
 
-function InfoBox(props: {children: React.ReactNode, style?: React.CSSProperties}) {
+type InfoBoxProps = {
+  children: React.ReactNode,
+  style?: React.CSSProperties,
+  onClick?: React.MouseEventHandler<Element>,
+}
+
+function InfoBox(props: InfoBoxProps) {
 
   return (
     <>
-      <div className="info-box" style={props.style}>
+      <div className="info-box" style={props.style} onClick={props.onClick}>
         {props.children}
       </div>
     </>
