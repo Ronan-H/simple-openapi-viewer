@@ -1,9 +1,11 @@
+import { useParams } from 'react-router-dom';
 import { Method, Parameter, Path, Response } from '../../openapi-2-types';
 import CenteredDiv from '../layout/CenteredDiv';
 import NavButton from './NavButton';
 import './PathDetails.css';
+import { SpecName } from './SpecChooser';
 
-function toTitleCase(str: string) {
+export function toTitleCase(str: string) {
   return str[0].toUpperCase() + str.substring(1);
 }
 
@@ -25,11 +27,12 @@ type PathDetailsProps = {
 };
 
 function PathDetails(props: PathDetailsProps) {
+  const specName = useParams().specName as SpecName;
   const pathMethods = Object.getOwnPropertyNames(props.path) as Method[];
 
   return (
     <>
-      <NavButton route="/" displayText="Back to Path Listing"/>
+      <NavButton route={`/${specName}`} displayText="Back to Path Listing"/>
 
       {pathMethods.map((method) => {
         const endPoint = props.path[method];

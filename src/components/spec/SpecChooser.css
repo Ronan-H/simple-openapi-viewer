@@ -1,0 +1,19 @@
+
+/**
+  SmartBeat colour palette:
+
+  slate: #ff730a;
+  orange: #173648
+*/
+
+.main-container {
+  width: '100vh';
+  padding: 0 50px;
+  color: #173648;
+  background: white;
+}
+
+a:link, a:visited, a:active, a:hover {
+  color: #ff730a;
+  font-weight: bold;
+}
