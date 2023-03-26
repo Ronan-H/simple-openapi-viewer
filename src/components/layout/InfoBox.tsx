@@ -8,10 +8,11 @@ type InfoBoxProps = {
 }
 
 function InfoBox(props: InfoBoxProps) {
+  const className = 'info-box' + (props.onClick ? ' clickable-info-box' : '');
 
   return (
     <>
-      <div className="info-box" style={props.style} onClick={props.onClick}>
+      <div className={className} style={props.style} onClick={props.onClick}>
         {props.children}
       </div>
     </>

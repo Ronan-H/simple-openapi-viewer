@@ -12,7 +12,7 @@ function PathSummary(props: PathSummaryProps) {
   const pathMethods = Object.getOwnPropertyNames(props.path);
 
   return (
-    <InfoBox style={{width: '100%'}} onClick={props.onClick}>
+    <InfoBox style={{width: '100%', padding: '15px'}} onClick={props.onClick}>
       <div className="details-grid">
         <h2 className="path-url">{props.url}</h2>
         <div className="methods-list">

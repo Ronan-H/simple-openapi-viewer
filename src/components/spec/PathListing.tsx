@@ -6,6 +6,8 @@ function PathListing(props: {paths: Paths, onPathClicked: any}) {
 
   return (
     <>
+      <h2>Select a path for more details</h2>
+
       {pathEntries
         // Sort paths alphabetically by URL
         .sort((a, b) => a[0].localeCompare(b[0]))

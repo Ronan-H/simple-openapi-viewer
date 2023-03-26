@@ -3,7 +3,32 @@
   display: inline-block;
   border: 2px solid black;
   border-radius: 15px;
-  background: ghostwhite;
+  background: #e4f0f7;
   padding: 5px;
   margin: 5px 0;
+
+  -webkit-transition: background 0.3s; /* For Safari 3.0 to 6.0 */
+  transition: background 0.3s; /* For modern browsers */
+}
+
+.clickable-info-box {
+  display: inline-block;
+  border: 2px solid black;
+  border-radius: 15px;
+  background: #e4f0f7;
+  padding: 5px;
+  margin: 5px 0;
+
+  -webkit-transition: background 0.3s; /* For Safari 3.0 to 6.0 */
+  transition: background 0.3s; /* For modern browsers */
+}
+
+
+.clickable-info-box:hover {
+  background: #c4deed;
+  cursor: pointer;
+}
+
+.clickablep-info-box:active {
+  background: #b1d3e7;
 }
