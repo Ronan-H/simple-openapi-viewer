@@ -216,12 +216,16 @@ export type EndPoint = {
     security:    PostSecurity[];
 }
 
+// There are more HTTP methods, but these are the main ones.
+export type Method =
+    'get' |
+    'put' |
+    'post' |
+    'patch' |
+    'delete';
+
 export type Path = {
-    get?: EndPoint,
-    put?: EndPoint,
-    post?: EndPoint,
-    patch?: EndPoint,
-    delete?: EndPoint,
+    [method in Method]: EndPoint
 }
 
 export type Paths = {

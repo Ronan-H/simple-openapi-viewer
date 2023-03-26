@@ -33,7 +33,6 @@ function App() {
 
   const onPathClicked = (path: string) => {
     const pathAsBase64 = encodings.unicodeToBase62(path);
-    console.log(pathAsBase64)
     navigate(`/${pathAsBase64}`);
   }
 
@@ -56,7 +55,6 @@ function App() {
       // Not a valid URL encoding
       return null;
     }
-    console.log('decoded:', decodedUrl)
 
     const validPaths = Object.getOwnPropertyNames(spec.paths);
     if (!validPaths.includes(decodedUrl)) {
@@ -70,15 +68,17 @@ function App() {
   const PathDetailsForEncodedUrl = () => {
     const navigate = useNavigate();
     const { pathBase64 } = useParams();
-
     // Cast to string because we know pathBase64 will be defined at this point
     const pathUrl = getDecodedPathUrl(pathBase64 as string);
 
-    console.log('url:', pathUrl)
+    useEffect(() => {
+      if (pathUrl === null) {
+        // If the url is invalid, let's just bring them to the home page.
+        navigate('/');
+      }
+    }, []);
 
-    if (pathUrl === null) {
-      // If the url is invalid, let's just bring them to the home page.
-      navigate('/');
+    if (pathUrl == null) {
       return null;
     }
 
