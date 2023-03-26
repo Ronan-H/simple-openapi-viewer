@@ -212,7 +212,7 @@ export type EndPoint = {
     consumes:    string[];
     produces:    string[];
     parameters:  Parameter[];
-    responses:   Response[];
+    responses:   Response;
     security:    PostSecurity[];
 }
 
