@@ -8,8 +8,8 @@ import InfoBox from '../../components/layout/InfoBox';
 import CenteredDiv from '../../components/layout/CenteredDiv';
 import PathDetails from '../../components/spec/PathDetails';
 import encodings from '../../encodings';
-import { SpecName, SPEC_URLS } from '../../App';
 import NavButton from './NavButton';
+import { SpecName, SPEC_URLS } from './SpecChooser';
 
 function SpecSummary() {
   const specName = useParams().specName as SpecName | undefined;
@@ -22,6 +22,7 @@ function SpecSummary() {
       return;
     }
 
+    // Let's use localStorage to cache the available specs.
     const localStorageSpec = localStorage.getItem(specName);
 
     if (localStorageSpec !== null) {
@@ -44,7 +45,9 @@ function SpecSummary() {
 
   if (spec == null) {
     return (
-      <p>Loading...</p>
+      <CenteredDiv>
+        <h1>Loading...</h1>
+      </CenteredDiv>
     );
   }
 
@@ -94,7 +97,7 @@ function SpecSummary() {
   };
 
   return (
-    <div className="main-container">
+    <div className="summary-container">
       <CenteredDiv>
         <div className="back-button">
           <NavButton route="/" displayText="Back to Spec Chooser"/>

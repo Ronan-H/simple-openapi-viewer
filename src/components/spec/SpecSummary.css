@@ -6,9 +6,9 @@
   orange: #173648
 */
 
-.main-container {
+.summary-container {
   width: '100vh';
-  padding: 0 50px;
+  padding: 0 40px;
   color: #173648;
   background: white;
 }

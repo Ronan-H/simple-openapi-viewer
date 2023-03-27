@@ -1,25 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { Method, Parameter, Path, Response } from '../../openapi-2-types';
+import { compareStatusCode, toTitleCase } from '../../utils';
 import CenteredDiv from '../layout/CenteredDiv';
 import NavButton from './NavButton';
 import './PathDetails.css';
 import { SpecName } from './SpecChooser';
-
-export function toTitleCase(str: string) {
-  return str[0].toUpperCase() + str.substring(1);
-}
-
-const DEFAULT_RESPONSE_KEY = 'default';
-function compareStatusCode(a: string, b: string) {
-  if (a === DEFAULT_RESPONSE_KEY) {
-    return -1;
-  }
-  else if (b === DEFAULT_RESPONSE_KEY) {
-    return 1;
-  }
-
-  return parseInt(a) - parseInt(b);
-}
 
 type PathDetailsProps = {
   url: string,
@@ -39,40 +24,25 @@ function PathDetails(props: PathDetailsProps) {
         const parameters = endPoint.parameters;
         const responses = endPoint.responses;
 
-        const paramLocations = endPoint.parameters.map((param) => param.in);
-        const uniqueParamLocations = Array.from(new Set(paramLocations));
+        return (
+          <div key={method}>
+            <h2 >{method.toUpperCase()} {props.url}</h2>
 
-        return <>
-          {uniqueParamLocations.map((paramLocation) => {
-            return (
-              <div key={paramLocation}>
-                <h2 >{method.toUpperCase()} {props.url}</h2>
+            <ParameterList parameters={parameters} />
 
-                <h3>{`${toTitleCase(paramLocation)} parameters:`}</h3>
+            <h3>Responses:</h3>
 
-                {parameters.filter((param) => param.in === paramLocation).map((parameter) => {
-                  return (
-                    <CenteredDiv key={parameter.name}>
-                      <ParameterDetails parameter={parameter} />
-                    </CenteredDiv>
-                  );
-                })}
-              </div>
-            );
-          })}
-
-          <h3>Responses:</h3>
-
-          <CenteredDiv>
-            <ResponseDetails response={responses} />
-          </CenteredDiv>
-        </>
+            <CenteredDiv>
+              <ResponseDetails response={responses} />
+            </CenteredDiv>
+          </div>
+        );
       })}
     </>
   );
 }
 
-const HIDDEN_FIELDS = ['schema', 'in'];
+const HIDDEN_FIELDS = ['schema', 'in', 'items'];
 
 function ParameterDetails(props: {parameter: Parameter}) {
   const parameterEntries = Object
@@ -88,16 +58,50 @@ function ParameterDetails(props: {parameter: Parameter}) {
       <table cellPadding="7">
         <tbody>
           {parameterEntries.map(([key, value]) => {
+            const renderedValue = (
+              typeof value === 'object' ?
+              JSON.stringify(value) : value.toString()
+            );
+
             return (
               <tr key={key}>
                 <th>{key}</th>
-                <td>{value.toString()}</td>
+                <td>{renderedValue}</td>
               </tr>
             );
           })}
         </tbody>
       </table>
     </div>
+  );
+}
+
+function ParameterList(props: {parameters: Parameter[]}) {
+  if (!props.parameters || props.parameters.length === 0) {
+    return null;
+  }
+
+  const paramLocations = props.parameters.map((param) => param.in);
+  const uniqueParamLocations = Array.from(new Set(paramLocations));
+
+  return (
+    <>
+      {uniqueParamLocations.map((paramLocation) => {
+        return (
+          <div key={paramLocation}>
+            <h3>{`${toTitleCase(paramLocation)} parameters:`}</h3>
+
+            {props.parameters.filter((param) => param.in === paramLocation).map((parameter) => {
+              return (
+                <CenteredDiv key={parameter.name}>
+                  <ParameterDetails parameter={parameter} />
+                </CenteredDiv>
+              );
+            })}
+          </div>
+        );
+      })}
+    </>
   );
 }
 

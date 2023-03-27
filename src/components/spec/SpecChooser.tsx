@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react';
 import './SpecChooser.css';
-import { OpenAPISpec } from '../../openapi-2-types';
-import { Routes, Route, useNavigate, useParams} from "react-router-dom";
-import ReactMarkdown from 'react-markdown';
-import PathListing from '../../components/spec/PathListing';
+import { useNavigate } from "react-router-dom";
 import InfoBox from '../../components/layout/InfoBox';
 import CenteredDiv from '../../components/layout/CenteredDiv';
-import { toTitleCase } from './PathDetails';
+import { toTitleCase } from '../../utils';
 
 export const SPEC_URLS = {
   petstore: 'https://petstore.swagger.io/v2/swagger.json',
@@ -18,18 +14,17 @@ export type SpecName = keyof typeof SPEC_URLS;
 function SpecChooser() {
   const navigate = useNavigate();
 
+  document.title = 'OpenAPI 2.0 Viewer'
+
   return (
     <div className="main-container">
       <CenteredDiv>
-        <h1>Choose a spec:</h1>
-      </CenteredDiv>
-
-      <CenteredDiv>
+        <h2>Choose a spec:</h2>
         {
           Object.getOwnPropertyNames(SPEC_URLS)
             .map((specName) => {
               return (
-                <InfoBox onClick={() => navigate(`/${specName}`)}>
+                <InfoBox key={specName} onClick={() => navigate(`/${specName}`)}>
                   {toTitleCase(specName)}
                 </InfoBox>
               );
